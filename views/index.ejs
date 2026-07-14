@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<!-- TITLE -->
+	<title>RLB.LOL - Token Leaderboard Economy</title>
+
+	<!-- META -->
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	<meta name="description" content="Buy tokens, climb the leaderboard, and become the richest user on RLB.LOL">
+
+	<link rel="canonical" href="<%= baseUrl %>">
+	<link rel="icon" href="<%= baseUrl %>/images/favicon.ico">
+	<link rel="preload" as="image" href="<%= baseUrl %>/images/preview.png">
+	<meta name="application-name" content="RLB.LOL">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+	<meta name="keywords" content="tokens, leaderboard, economy, ranking, richest, RLB">
+	<meta name="google-adsense-account" content="ca-pub-7394838836739167">
+
+	<meta name="robots" content="index, follow">
+	<meta name="author" content="zackdcat">
+	<meta property="og:site_name" content="RLB.LOL">
+
+	<!-- OPEN GRAPH -->
+	<meta property="og:title" content="RLB.LOL - Token Leaderboard Economy">
+	<meta property="og:description" content="Buy tokens, climb the leaderboard, and become the richest user.">
+	<meta property="og:url" content="<%= baseUrl %>">
+	<meta property="og:type" content="website">
+	<meta property="og:image" content="<%= baseUrl %>/images/preview.png">
+	<meta property="og:image:width" content="1200">
+	<meta property="og:image:height" content="630">
+	<meta property="og:image:type" content="image/png">
+	<meta property="og:image:alt" content="RLB.LOL Token Leaderboard Economy">
+	<meta name="twitter:card" content="summary_large_image">
+	<meta name="twitter:title" content="RLB.LOL - Token Leaderboard Economy">
+	<meta name="twitter:description" content="Buy tokens, climb the leaderboard, and become the richest user on RLB.LOL">
+	<meta name="twitter:image" content="<%= baseUrl %>/images/preview.png">
+	<meta name="twitter:url" content="<%= baseUrl %>">
+	<meta name="theme-color" content="#7cff00">
+
+	<!-- LINKS -->
+	<link rel="stylesheet" href="/stylesheets/index.css">
+
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+	<link href="https://fonts.googleapis.com/css2?family=Raleway:wght@100..900&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100..800&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+
+	<link rel="icon" href="/images/favicon.ico">
+</head>
+<body>
+	<!-- TITLE -->
+	<a href="/">
+		<h1 class="Logo">
+			<span class="logo-rlb">RLB</span><span class="logo-dot">.</span><span class="logo-lol">LOL</span>
+		</h1>
+	</a>
+	
+	<!-- TUTORIAL MODAL -->
+	<div id="onboarding-modal" class="onboarding-modal">
+		<div class="onboarding-box">
+			<h2 id="title">Welcome to RLB.LOL</h2>
+			<p id="text">A token-based leaderboard where status is determined by your token balance.</p>
+			<p id="text">Buy tokens to climb the rankings. Ties are resolved by who reached the amount first.</p>
+
+			<button class="accept-button" onclick="finish()">Ok</button>
+		</div>
+	</div>
+
+	<!-- TOAST -->
+	<div id="toast"></div>
+
+	<!-- LOGIN ICON -->
+	<img src="/images/login-icon.svg" id="login-icon" class="login-icon" onclick="openLoginSettings()">
+	
+	<!-- BLURED BACKROUND -->
+	<div id="background" class="background" onclick="closeMenu()"></div>
+
+	<!-- LOGIN -->
+	<div id="login-id" class="popup-section">
+		<img src="/images/close-window.svg" alt="close-window" class="close-window" onclick="closeMenu()">
+
+		<div class="popup-header">
+			<h2>Welcome back</h2>
+			<p>Log in to your account</p>
+		</div>
+
+		<div class="popup-field">
+			<label for="username">Username</label>
+			<input type="text" id="login-username" placeholder="Enter your username" autocomplete="username">
+		</div>
+
+		<div class="popup-field">
+			<div class="popup-field-row">
+				<label for="password">Password</label>
+			</div>
+			<input type="password" id="login-password" placeholder="Enter your password" autocomplete="password">
+		</div>
+
+		<button class="popup-submit" onclick="SUBMITLOGIN()">Log in</button>
+
+		<p class="popup-footer">Don't have an account? <span class="link-text" onclick="openSignin()">Sign up</span></p>
+	</div>
+
+	<!-- SETTINGS -->
+	<div id="settings-popup" class="settings-popup">
+		<img src="/images/close-window.svg" alt="close" class="close-window" onclick="closeMenu()">
+
+		<div class="settings-header">
+			<label class="settings-pfp-wrapper" for="pfp-input">
+				<img id="settings-pfp" src="/images/account.svg" class="settings-pfp">
+				<div class="settings-pfp-overlay">change</div>
+				<input type="file" id="pfp-input" accept="image/*" style="display:none" onchange="previewPfp(this)">
+			</label>
+			<div class="settings-info">
+				<p class="settings-username" id="UserIndicator"></p>
+				<span class="view-profile" id="view-profile-btn" onclick="myProfile()">Click me to view your profile.</span>
+			</div>
+		</div>
+
+		<div class="settings-fields">
+			<div class="popup-field">
+				<label>New username</label>
+				<input type="text" id="new-username" placeholder="Enter new username" autocomplete="off">
+			</div>
+			<div class="popup-field">
+				<label>Bio.</label>
+				<input type="text" id="new-biography" placeholder="Enter new bio." autocomplete="off">
+			</div>
+			<div class="popup-field">
+				<label>New password</label>
+				<input type="password" id="new-password" placeholder="Enter new password" autocomplete="off">
+			</div>
+			<div class="popup-field">
+				<label>Current password (required to save)</label>
+				<input type="password" id="current-password" placeholder="Enter current password" autocomplete="password">
+			</div>
+			<button class="popup-submit" onclick="saveSettings()">Save changes</button>
+		</div>
+
+		<div class="settings-actions">
+			<button class="settings-btn logout" onclick="logout()">
+				<img src="/images/logout-icon.svg" alt="">Log out
+			</button>
+		</div>
+	</div>
+
+	<!-- SIGNUP -->
+	<div id="signup-id" class="popup-section">
+		<img src="/images/close-window.svg" alt="close-window" class="close-window" onclick="closeMenu()">
+
+		<div class="popup-header">
+			<h2>Join us!</h2>
+			<p>Sign up for an account</p>
+		</div>
+
+		<div class="popup-field">
+			<label for="username">Username</label>
+			<input type="text" id="signin-username" placeholder="Make a username">
+		</div>
+
+		<div class="popup-field">
+			<div class="popup-field-row">
+				<label for="password">Password</label>
+			</div>
+			<input type="password" id="signin-password" placeholder="Make a password">
+		</div>
+
+		<button class="popup-submit" onclick="SUBMITSIGNUP()">Sign up</button>
+
+		<p class="popup-footer">Have an account? <span class="link-text" onclick="openLoginSettings()">Log in</span></p>
+	</div>
+
+	<!-- LEADERBOARD -->
+	<table class="leaderboard">
+		<thead>
+			<tr>
+				<th>Rank</th>
+				<th>User</th>
+				<th>Tokens</th>
+			</tr>
+		</thead>
+		<tbody id="leaderboard"></tbody>
+	</table>
+
+	<!-- PROFILE POPUP FROM LEADERBOARD -->
+	<div id="profile-modal" class="username-popup-div">
+		<img src="/images/close-window.svg" class="close-window" onclick="closeMenu()">
+		
+		<img id="profile-modal-pfp" class="popup-profile" src="/images/account.svg">
+		
+		<div class="profile-info">
+			<!-- <p class="profile-username" id="profile-modal-username"></p> -->
+			<div style="display: flex; align-items: center; gap: 10px;">
+				<p class="profile-username" id="profile-modal-username"></p>
+				<button id="share-profile-btn" style="background: none; border: none; cursor: pointer; padding: 0; display: flex; align-items: center;" title="Copy Profile Link">
+					<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#7cff00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-8"></path><polyline points="16 6 12 2 8 6"></polyline><line x1="12" y1="2" x2="12" y2="15"></line></svg>
+				</button>
+			</div>
+			<p class="profile-bio" id="profile-bio"></p>
+			<p class="profile-stats" id="profile-stats"></p>
+			<p class="profile-member-since" id="profile-member-since"></p>
+		</div>
+	</div>
+
+	<!-- INFO MODAL (TERMS + PRIVACY) -->
+	<div id="info-modal" class="popup-section">
+
+		<img src="/images/close-window.svg"
+			alt="close"
+			class="close-window"
+			onclick="closeMenu()">
+
+		<div class="popup-header">
+			<h2>Terms, Privacy & Information</h2>
+		</div>
+
+		<div class="info-text">
+			<p>By using RLB.LOL you agree to these Terms and understand how your data is handled.</p>
+			<br>
+
+			<h3>Eligibility</h3>
+			<ul>
+				<li>You must be at least 18 years old to use this service.</li>
+				<li>By using the service, you confirm you meet this requirement.</li>
+			</ul>
+
+			<h3>Accounts</h3>
+			<ul>
+				<li>You are responsible for maintaining the security of your account.</li>
+				<li>You must not share your account with others.</li>
+				<li>We may suspend or terminate accounts that violate these terms.</li>
+				<li>You are responsible for all activity under your account.</li>
+			</ul>
+
+			<h3>Tokens</h3>
+			<ul>
+				<li>Tokens are virtual items used only within RLB.LOL.</li>
+				<li>Tokens have no real-world value and cannot be redeemed for cash, goods, or services.</li>
+				<li>Tokens cannot be exchanged outside of the platform.</li>
+				<li>Purchasing tokens does not create ownership, investment rights, or financial interest in the service.</li>
+				<li>Token balances may be adjusted in cases of error, fraud, or abuse.</li>
+			</ul>
+
+			<h3>Payments</h3>
+			<ul>
+				<li>Payments are processed securely via Stripe.</li>
+				<li>No payment card details are stored by us.</li>
+				<li>All purchases are final and non-refundable unless required by law.</li>
+				<li>Purchasing tokens only grants virtual in-app credit and does not guarantee leaderboard position.</li>
+				<li>Chargebacks or payment disputes may result in account suspension or token removal.</li>
+			</ul>
+
+			<h3>Leaderboard</h3>
+			<ul>
+				<li>Leaderboard rankings are based on token balance.</li>
+				<li>Rankings may change at any time due to user activity or system adjustments.</li>
+				<li>Leaderboard positions are for entertainment purposes only.</li>
+				<li>No leaderboard position provides monetary reward, prize, or financial benefit.</li>
+				<li>Leaderboard rankings are generated automatically based on token balances and system rules.</li>
+			</ul>
+
+			<h3>Acceptable Use</h3>
+			<ul>
+				<li>No exploiting, cheating, botting, or abusing the system.</li>
+				<li>No attempts to gain unauthorized access to accounts or systems.</li>
+				<li>No impersonation of others or misleading usernames.</li>
+			</ul>
+
+			<h3>Service Availability</h3>
+			<ul>
+				<li>We may modify, suspend, or discontinue the service at any time.</li>
+				<li>We do not guarantee uninterrupted or error-free operation.</li>
+			</ul>
+
+			<h3>Data & Privacy</h3>
+			<ul>
+				<li>We collect only data necessary to operate the service (e.g. account info, sessions, usage data).</li>
+				<li>This may include IP address and device information for security and abuse prevention.</li>
+				<li>We use cookies to keep users logged in and maintain sessions.</li>
+				<li>Payment processing is handled by Stripe and we do not store card details.</li>
+				<li>We do not sell personal data.</li>
+				<li>Data is used only to operate, secure, and improve the service.</li>
+
+				<!-- UNCOMMENT LATER -->
+				<li>We may use third-party analytics services (such as Google Analytics) to understand site usage.</li>
+				<li>These services may collect anonymised usage data such as pages visited, device type, and approximate location.</li>
+				<li>This data helps us improve performance and user experience.</li>
+				<li>We may display third-party advertisements (such as Google Ads).</li>
+				<li>Third-party advertisers may use cookies to show relevant ads based on your activity.</li>
+				<li>You can manage ad personalisation through your browser or Google settings.</li>
+			</ul>
+
+			<h3>Data Rights</h3>
+			<ul>
+				<li>You may request deletion of your account and associated data.</li>
+				<li>You may request information about what data we hold about you.</li>
+			</ul>
+
+			<h3>Limitation of Liability</h3>
+			<ul>
+				<li>The service is provided "as is" without warranties of any kind.</li>
+				<li>We are not liable for losses, data loss, or service interruptions.</li>
+			</ul>
+
+			<h3>Changes</h3>
+			<ul>
+				<li>We may update these terms and privacy information at any time.</li>
+				<li>Continued use of the service means you accept the updated version.</li>
+				<li>You may request account deletion at any time.</li>
+				<li>We may correct balances in the event of bugs or system errors.</li>
+				<li>We may remove content, usernames, or accounts that violate rules or harm the service.</li>
+			</ul>
+
+			<h3>Contact</h3>
+			<p>
+				<a href="mailto:zwhseton@gmail.com">zwhseton@gmail.com</a>
+			</p>
+
+			<br>
+			<!-- <h3>Update:</h3>
+			<p>
+				You can now update your username.
+			</p> -->
+			
+			<br>
+			<p>RLB V1.1</p>
+		</div>
+	</div>
+
+	<!-- TOKEN POPUP -->
+	<div class="token-popup" id="token-popup">
+		<img src="/images/close-window.svg" alt="close-window" class="close-window" onclick="closeMenu()">
+		
+		<div class="token-header">
+			<h2>Buy tokens</h2>
+			<% if (price) { %>
+				<p>1 token = <%= price %></p>
+			<% } %>
+		</div>
+
+		<div class="counter">
+			<button class="minus" id="minus">−</button>
+			<input class="value" id="num" type="number" value="1" min="1" max="999">
+			<button class="plus" id="plus">+</button>
+		</div>
+
+		<button class="token-button" onclick="giveTokens()">Buy</button>
+	</div>
+
+	<!-- INFO BUTTON -->
+	<div id="info-btn" onclick="openInfo()" title="Terms, Privacy & Cookies">i</div>
+
+	<!-- TOKEN BUTTON -->
+	<button class="token-opener" onclick="openTokenPurchase()" title="Purchase Tokens.">
+		<% if (price) { %>
+			Buy tokens • <%= price %> / token
+		<% } else { %>
+			Buy tokens
+		<% } %>
+	</button>
+
+	<!-- RELOAD BUTTON -->
+	<div class="reload-btn" onclick="Reload()" title="Reload leaderboard."><img src="/images/reload.png" alt="Reload button"></div>
+
+	<!-- COOKIE BANNER -->
+	<section id="cookie-banner" class="fixed max-w-2xl p-4 mx-auto bg-[#111111] border-2 border-[#7cff00] md:gap-x-4 left-12 bottom-16 rounded-2xl shadow-lg" style="font-family: 'JetBrains Mono', monospace;">
+		
+		<div class="flex items-center gap-x-4">
+			
+			<span class="inline-flex p-2 text-[#7cff00] rounded-lg shrink-0 bg-[#1a1a1a]">
+				
+				<svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cookie-icon">
+					<path d="M12 2a10 10 0 1 0 10 10 4 4 0 0 1-5-5 4 4 0 0 1-5-5"/>
+					<path d="M8.5 8.5v.01"/>
+					<path d="M16 15.5v.01"/>
+					<path d="M12 12v.01"/>
+					<path d="M11 17v.01"/>
+					<path d="M7 14v.01"/>
+				</svg>
+
+			</span>
+
+			<p class="text-sm text-white">
+				We use cookies to improve your experience on RLB.LOL. By continuing to use the site, you agree to our
+				<a class="text-[#7cff00] hover:underline">Cookie Policy & Terms</a>.
+			</p>
+
+		</div>
+		
+		<div class="flex items-center mt-6 gap-x-4 shrink-0 lg:mt-0">
+			
+			<button onclick="openInfo()" class="w-1/2 md:w-auto text-xs bg-[#222222] text-white px-4 py-2.5 rounded-lg border border-[#444444] hover:bg-[#2a2a2a] transition-colors">
+				View Terms
+			</button>
+
+			<button onclick="acceptCookies()" class="text-xs w-1/2 md:w-auto font-medium bg-[#7cff00] hover:bg-[#6de000] text-black px-4 py-2.5 rounded-lg transition-colors">
+				Accept All Cookies
+			</button>
+
+		</div>
+
+	</section>
+	
+	<!-- SCRIPTS -->
+	<script src="https://cdn.tailwindcss.com"></script>
+	<script src="/javascripts/index.js"></script>
+	<script async src="https://www.googletagmanager.com/gtag/js?id=G-LD2NC6ZPKM"></script>
+	<script>
+		window.dataLayer = window.dataLayer || [];
+		function gtag(){dataLayer.push(arguments);}
+		gtag('js', new Date());
+
+		gtag('config', 'G-LD2NC6ZPKM');
+	</script>
+	<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7394838836739167" crossorigin="anonymous"></script>
+</body>
+</html>

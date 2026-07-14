@@ -1,0 +1,12 @@
+# NODE
+node_modules/
+
+# SECRETS
+.env
+
+# VSCODE
+.vscode/
+
+# MISC
+content_ideas.txt
+

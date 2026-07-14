@@ -1,0 +1,13 @@
+{
+  "files.associations": {
+    "*.ejs": "html"
+  },
+  "emmet.includeLanguages": {
+    "ejs": "html"
+  },
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true
+  }
+}
